@@ -229,18 +229,20 @@ python inference_realesrgan.py -n RealESRGAN_x4plus_anime_6B -i inputs
 ### 视频处理
 
 ```shell
+# 推荐使用这个，因为会显示处理的进度条
+python inference_realesrgan_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 
+
+# 注意：如果上面的脚本生成视频有问题，或根本不能生成视频，可以尝试用下面的脚本命令；或者你不在乎进度条，可以使用这个
 python inference_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 
 ```
 
-注：
-> inference_video.py 是我自己写的一个简单的脚本，不是原作者的脚本，用来处理视频，生成的视频会放在原视频同一个目录下。
-> 因为在我这里 inference_realesrgan_video.py 不能处理竖屏视频（不清楚是脚本的问题还是我视频的问题。手机拍摄的竖屏视频，肉眼看上去它的帧高度大于宽度，但是审查视频信息时发现它的分辨率却是宽度大于高度）
-
+> inference_video.py 是我自己写的一个简单的脚本，不是原作者的脚本，用来处理视频，生成的视频会放在原视频同一个目录下，而不是放到 results 文件夹中。
+> 因为在我这里 inference_realesrgan_video.py 不能处理竖屏视频，会报错或者视频根本无法播放，（不清楚是脚本的问题还是我视频的问题。手机拍摄的竖屏视频，肉眼看上去它的帧高度大于宽度，但是审查视频信息时发现它的分辨率却是宽度大于高度）
 
 
 ### Python 脚本的用法
 
-1. 虽然你使用了 X4 模型，但是你可以 **输出任意尺寸比例的图片**，只要实用了 `outscale` 参数. 程序会进一步对模型的输出图像进行缩放。
+1. 虽然你使用了 X4 模型，但是你可以 **输出任意尺寸比例的图片**，只要使用了 `outscale` 参数. 程序会进一步对模型的输出图像进行缩放。
 
 ```console
 Usage: python inference_realesrgan.py -n RealESRGAN_x4plus -i infile -o outfile [options]...
