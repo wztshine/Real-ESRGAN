@@ -159,6 +159,8 @@ Usage: realesrgan-ncnn-vulkan.exe -i infile -o outfile [options]...
 
 由于这些exe文件会把图像分成几个板块，然后来分别进行处理，再合成导出，输出的图像可能会有一点割裂感（而且可能跟PyTorch的输出不太一样）
 
+注：自己编写了一个 call_exe.py 的脚本，可以调用上述的 exe 来处理视频和图片，脚本包含了两个接口：img(), video()
+
 ---
 
 ## :wrench: 依赖以及安装
@@ -227,13 +229,12 @@ python inference_realesrgan.py -n RealESRGAN_x4plus_anime_6B -i inputs
 ### 视频处理
 
 ```shell
-python inference_realesrgan_video.py -n RealESRGAN_x4plus_anime_6B -i inputs/video/onepiece_demo.mp4
-
-# 针对竖屏视频，加上 --extract_frame_first 参数
-python inference_realesrgan_video.py -n RealESRGAN_x4plus_anime_6B -i inputs/video/onepiece_demo.mp4 --extract_frame_first
+python inference_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 
 ```
 
-> 如果是竖屏视频，譬如手机拍摄的竖屏视频，要加上 `--extract_frame_first` 参数，否则生成的视频可能是横向花屏的视频
+注：
+> inference_video.py 是我自己写的一个简单的脚本，不是原作者的脚本，用来处理视频，生成的视频会放在原视频同一个目录下。
+> 因为在我这里 inference_realesrgan_video.py 不能处理竖屏视频（不清楚是脚本的问题还是我视频的问题。手机拍摄的竖屏视频，肉眼看上去它的帧高度大于宽度，但是审查视频信息时发现它的分辨率却是宽度大于高度）
 
 
 

@@ -14,7 +14,7 @@ T_Model = typing.Literal["realesr-animevideov3", "realesrgan-x4plus", "realesrga
 
 
 def img(img_path: str | pathlib.Path, scale: T_Scale = 2, model: T_Model = "realesr-animevideov3", realesrgan_path: str = None):
-    """通过 realesrgan 来增强处理图片
+    """通过 realesrgan 来增强处理图片, 会在同一个目录下生成一个叫 原文件名_X放大倍数 的新文件。
 
     :param img_path: 图片文件路径
     :param scale: 图片放大比例，默认 2 倍，可选值为：2,3,4
@@ -58,9 +58,8 @@ def video(video_path: str | pathlib.Path, frame_rate: float = None, fps: float =
 
     if not ffmpeg_path:
         ffmpeg_path = "ffmpeg"
-    else:
-        if not realesrgan_path:
-            realesrgan_path = "realesrgan-ncnn-vulkan.exe"
+    if not realesrgan_path:
+        realesrgan_path = "realesrgan-ncnn-vulkan.exe"
 
     frame_rate = get_frame_rate(video_path) if frame_rate is None else frame_rate
     fps = frame_rate if fps is None else fps
@@ -83,12 +82,16 @@ def get_frame_rate(video_path):
     :param video_path: video path
     :return: frame rate of the video
     """
-    probe = ffmpeg.probe(video_path)
+    if not pathlib.Path(video_path).exists():
+        raise FileNotFoundError(f"{video_path} Doesn't exists.")
+
+    probe = ffmpeg.probe(str(video_path))
     video_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'video']
     fps = eval(video_streams[0]['avg_frame_rate'])
+    fps = round(fps, 2)
     return fps
 
 
 if __name__ == "__main__":
-    video(r"D:\备份\documents\Projects\video_enhance\Real-ESRGAN-master\inputs\video\xx.mp4", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe", ffmpeg_path=None)
-    # img("xx.jpg", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe")
+    # video(r"inputs\video\xx.mp4", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe", ffmpeg_path=None)
+    img("inputs/0014.jpg", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe")

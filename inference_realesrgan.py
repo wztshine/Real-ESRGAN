@@ -162,8 +162,8 @@ def main():
                 else:
                     save_path = os.path.join(args.output, f'{imgname}_{args.suffix}.{extension}')
                 cv2.imwrite(save_path, output)
-        except AttributeError:
-            print(f"Invalid image: {path}")
+        except AttributeError as e:
+            print(f"Invalid image: {path}, error: {e}")
 
 if __name__ == '__main__':
     main()

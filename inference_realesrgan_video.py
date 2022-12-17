@@ -249,6 +249,9 @@ def inference_video(args, video_save_path, device=None, total_workers=1, worker_
     reader = Reader(args, total_workers, worker_idx)
     audio = reader.get_audio()
     height, width = reader.get_resolution()
+    if args.orientation == 0:  # 竖屏类型的视频
+        height = max(height, width)
+        width = min(height, width)
     fps = reader.get_fps()
     writer = Writer(args, audio, height, width, video_save_path, fps)
 
@@ -358,6 +361,7 @@ def main():
     parser.add_argument('--ffmpeg_bin', type=str, default='ffmpeg', help='The path to ffmpeg')
     parser.add_argument('--extract_frame_first', action='store_true')
     parser.add_argument('--num_process_per_gpu', type=int, default=1)
+    parser.add_argument('-ori', '--orientation', type=int, default=1, help='Video orientation, 1 means horizontal video: width > height, 0 means vertical video: height > width')
 
     parser.add_argument(
         '--alpha_upsampler',
