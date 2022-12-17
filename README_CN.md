@@ -230,10 +230,10 @@ python inference_realesrgan.py -n RealESRGAN_x4plus_anime_6B -i inputs
 
 ```shell
 # 推荐使用这个，因为会显示处理的进度条
-python inference_realesrgan_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 
+python inference_realesrgan_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 -t 10
 
 # 注意：如果上面的脚本生成视频有问题，或根本不能生成视频，可以尝试用下面的脚本命令；或者你不在乎进度条，可以使用这个
-python inference_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 
+python inference_video.py -i /inputs/video/onepiece_demo.mp4 -n RealESRGAN_x2plus -s 1.5 -t 10
 ```
 
 > inference_video.py 是我自己写的一个简单的脚本，不是原作者的脚本，用来处理视频，生成的视频会放在原视频同一个目录下，而不是放到 results 文件夹中。
