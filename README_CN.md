@@ -224,6 +224,19 @@ python inference_realesrgan.py -n RealESRGAN_x4plus_anime_6B -i inputs
 
 结果在`results`文件夹
 
+### 视频处理
+
+```shell
+python inference_realesrgan_video.py -n RealESRGAN_x4plus_anime_6B -i inputs/video/onepiece_demo.mp4
+
+# 针对竖屏视频，加上 --extract_frame_first 参数
+python inference_realesrgan_video.py -n RealESRGAN_x4plus_anime_6B -i inputs/video/onepiece_demo.mp4 --extract_frame_first
+```
+
+> 如果是竖屏视频，譬如手机拍摄的竖屏视频，要加上 `--extract_frame_first` 参数，否则生成的视频可能是横向花屏的视频
+
+
+
 ### Python 脚本的用法
 
 1. 虽然你使用了 X4 模型，但是你可以 **输出任意尺寸比例的图片**，只要实用了 `outscale` 参数. 程序会进一步对模型的输出图像进行缩放。
