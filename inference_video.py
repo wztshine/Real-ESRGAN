@@ -46,7 +46,7 @@ def video(video_path: str | pathlib.Path, frame_rate: float = None, fps: float =
 
     os.system(cmd)
     os.system(cmd2)
-    try:e
+    try:
         subprocess.check_call(cmd3, shell=True)
     except subprocess.CalledProcessError as e:
         print(e)
