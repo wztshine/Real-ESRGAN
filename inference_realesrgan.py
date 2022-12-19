@@ -132,7 +132,7 @@ def main():
 
     for idx, path in enumerate(paths):
         imgname, extension = os.path.splitext(os.path.basename(path))
-        print("Processing:", imgname, f'Current/Total: {idx}/{len(paths)}',)
+        print("Processing:", imgname, f'Current/Total: {idx+1}/{len(paths)}',)
         try:
             img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
             if len(img.shape) == 3 and img.shape[2] == 4:
@@ -164,7 +164,7 @@ def main():
                 cv2.imwrite(save_path, output)
                 print(f"Save to: {save_path}")
         except AttributeError as e:
-            print(f"Invalid image: {path}, error: {e}")
+            print(f"Invalid image or path: {path}, path should not contain Chinese character. error: {e}")
 
 if __name__ == '__main__':
     main()
