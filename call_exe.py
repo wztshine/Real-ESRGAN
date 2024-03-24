@@ -13,7 +13,7 @@ T_Scale = typing.Literal[2, 3, 4]
 T_Model = typing.Literal["realesr-animevideov3", "realesrgan-x4plus", "realesrgan-x4plus-anime", "realesrnet-x4plus"]
 
 
-def img(img_path: str | pathlib.Path, scale: T_Scale = 2, model: T_Model = "realesr-animevideov3", realesrgan_path: str = None):
+def img(img_path: typing.Union[str, pathlib.Path], scale: T_Scale = 4, model: T_Model = "realesrgan-x4plus", realesrgan_path: str = None):
     """通过 realesrgan 来增强处理图片, 会在同一个目录下生成一个叫 原文件名_X放大倍数 的新文件。
 
     :param img_path: 图片文件路径
@@ -29,8 +29,8 @@ def img(img_path: str | pathlib.Path, scale: T_Scale = 2, model: T_Model = "real
     os.system(cmd)
 
 
-def video(video_path: str | pathlib.Path, frame_rate: float = None, fps: float = None, scale: T_Scale = 2,
-          model: T_Model = "realesr-animevideov3", realesrgan_path: str = None, ffmpeg_path: str = None):
+def video(video_path: typing.Union[str, pathlib.Path], frame_rate: float = None, fps: float = None, scale: T_Scale = 2,
+          model: T_Model = "realesrgan-x4plus", realesrgan_path: str = None, ffmpeg_path: str = None):
     """通过 ffmpeg 和 realesrgan 来增强处理视频, 默认新生成的视频名为：原视频名_X放大倍数。
 
     :param video_path: 视频文件路径
@@ -93,5 +93,5 @@ def get_frame_rate(video_path):
 
 
 if __name__ == "__main__":
-    # video(r"inputs\video\xx.mp4", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe", ffmpeg_path=None)
-    img("inputs/0014.jpg", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe")
+    video(r"C:\Users\wztsh\Downloads\1.mp4", realesrgan_path=r"C:\Users\wztsh\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe", ffmpeg_path=None)
+    # img("inputs/0014.jpg", realesrgan_path=r"C:\Users\wztshine\Downloads\realesrgan-ncnn-vulkan-20220424-windows\realesrgan-ncnn-vulkan.exe")

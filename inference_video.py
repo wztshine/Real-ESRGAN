@@ -4,12 +4,13 @@ import pathlib
 import shutil
 import subprocess
 import sys
+import typing
 
 import ffmpeg
 
 
-def video(video_path: str | pathlib.Path, frame_rate: float = None, fps: float = None, scale: float = 2, tile: int = 1000,
-          model="realesr-animevideov3", ffmpeg_path: str = "ffmpeg"):
+def video(video_path: typing.Union[str, pathlib.Path], frame_rate: float = None, fps: float = None, scale: float = 2, tile: int = 1000,
+          model="realesr-animevideov3", ffmpeg_path: str = "ffmpeg", fp32: bool = True):
     """通过 ffmpeg 和 realesrgan 来增强处理视频, 默认新生成的视频名为：原视频名_X放大倍数。
 
     :param video_path: 视频文件路径
@@ -19,6 +20,7 @@ def video(video_path: str | pathlib.Path, frame_rate: float = None, fps: float =
     :param tile: 每个 tile 的像素大小，如果图片很大，则显卡负担很重，可能出现 GPU 内存异常。因此可以将每张图片按照指定的 tile 大小来分割成多块小图片，显卡每次处理这种小图片从而减轻显卡负担。这个数越大，则划分的小图片越少。
     :param model: 使用的模型名字
     :param ffmpeg_path: ffmpeg.exe 文件所在路径，如果是 None，则代表你已经将此程序加入环境变量中。
+    :param fp32: 是否使用 32位精度（默认 16）
     :return:
     """
     video_path = pathlib.Path(video_path).resolve()
@@ -47,7 +49,10 @@ def video(video_path: str | pathlib.Path, frame_rate: float = None, fps: float =
         os.system(cmd)
 
     try:
-        cmd2 = f"{sys.executable} ./inference_realesrgan.py -i {input_frames_path} -o {out_frames_path} -n {model} -s {scale} -t {tile}"  # 将 input_frames_path 文件夹中的所有图片，批量放大处理，存到 out_frames_path 文件夹中
+        if fp32:
+            cmd2 = f"{sys.executable} ./inference_realesrgan.py -i {input_frames_path} -o {out_frames_path} -n {model} -s {scale} -t {tile} --fp32 --face_enhance"  # 将 input_frames_path 文件夹中的所有图片，批量放大处理，存到 out_frames_path 文件夹中
+        else:
+            cmd2 = f"{sys.executable} ./inference_realesrgan.py -i {input_frames_path} -o {out_frames_path} -n {model} -s {scale} -t {tile}"  # 将 input_frames_path 文件夹中的所有图片，批量放大处理，存到 out_frames_path 文件夹中
         subprocess.check_call(cmd2, shell=True)
     except subprocess.CalledProcessError as e:
         print(e)
